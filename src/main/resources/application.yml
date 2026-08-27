@@ -1,0 +1,33 @@
+spring:
+    profiles:
+        active: dev
+    application:
+        name: demo
+    ai:
+        openai:
+            base-url: https://openrouter.ai/api/v1
+            api-key: ${OPENROUTER_API_KEY}
+            chat:
+                model: openai/gpt-4o
+            embedding:
+                model: text-embedding-3-small
+        vectorstore:
+            pgvector:
+                index-type: HNSW
+                distance-type: COSINE_DISTANCE
+                dimensions: 1536
+                initialize-schema: true
+    datasource:
+        url: ${DATABASE_URL}
+        username: ${DATABASE_USERNAME}
+        password: ${DATABASE_PASSWORD}
+    jpa:
+        hibernate:
+            ddl-auto: update
+        properties:
+            hibernate:
+                show_sql: true
+                format_sql: true
+                dialect: org.hibernate.dialect.PostgreSQLDialect
+server:
+    port: 8081

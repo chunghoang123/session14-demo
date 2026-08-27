@@ -1,0 +1,911 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SmartHub — Trung Tâm Vận Hành Logistics Thông Minh (RikkeiExpress)</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <!-- FontAwesome icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        :root {
+            --bg-dark: #090d16;
+            --card-bg: rgba(22, 30, 49, 0.7);
+            --card-border: rgba(255, 255, 255, 0.08);
+            --accent-primary: #6366f1;
+            --accent-cyan: #06b6d4;
+            --accent-emerald: #10b981;
+            --accent-amber: #f59e0b;
+            --accent-rose: #f43f5e;
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            --glass-blur: blur(16px);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Outfit', -apple-system, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-dark);
+            color: var(--text-main);
+            min-height: 100vh;
+            background-image: 
+                radial-gradient(at 0% 0%, rgba(99, 102, 241, 0.15) 0px, transparent 50%),
+                radial-gradient(at 100% 100%, rgba(6, 182, 212, 0.12) 0px, transparent 50%);
+            background-attachment: fixed;
+            overflow-x: hidden;
+        }
+
+        /* Header Bar */
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1.25rem 2rem;
+            background: rgba(15, 23, 42, 0.8);
+            backdrop-filter: var(--glass-blur);
+            border-bottom: 1px solid var(--card-border);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .brand-logo {
+            width: 42px;
+            height: 42px;
+            background: linear-gradient(135deg, var(--accent-primary), var(--accent-cyan));
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.25rem;
+            box-shadow: 0 4px 20px rgba(99, 102, 241, 0.4);
+        }
+
+        .brand-title {
+            font-weight: 800;
+            font-size: 1.35rem;
+            letter-spacing: -0.5px;
+            background: linear-gradient(to right, #ffffff, #cbd5e1);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .brand-sub {
+            font-size: 0.75rem;
+            color: var(--accent-cyan);
+            font-weight: 600;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        .status-badge {
+            background: rgba(16, 185, 129, 0.12);
+            color: var(--accent-emerald);
+            border: 1px solid rgba(16, 185, 129, 0.3);
+            padding: 0.4rem 0.85rem;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            background: var(--accent-emerald);
+            border-radius: 50%;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7); }
+            70% { transform: scale(1); box-shadow: 0 0 0 8px rgba(16, 185, 129, 0); }
+            100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(16, 185, 129, 0); }
+        }
+
+        /* Container Layout */
+        .container {
+            max-width: 1380px;
+            margin: 0 auto;
+            padding: 2rem 1.5rem;
+        }
+
+        /* Module Navigation Tabs */
+        .nav-tabs {
+            display: flex;
+            gap: 0.75rem;
+            margin-bottom: 2rem;
+            background: rgba(15, 23, 42, 0.6);
+            padding: 0.5rem;
+            border-radius: 16px;
+            border: 1px solid var(--card-border);
+        }
+
+        .tab-btn {
+            flex: 1;
+            padding: 0.85rem 1.25rem;
+            background: transparent;
+            border: none;
+            color: var(--text-muted);
+            font-weight: 600;
+            font-size: 0.95rem;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.6rem;
+        }
+
+        .tab-btn:hover {
+            color: var(--text-main);
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .tab-btn.active {
+            background: linear-gradient(135deg, var(--accent-primary), #4f46e5);
+            color: #ffffff;
+            box-shadow: 0 4px 15px rgba(99, 102, 241, 0.35);
+        }
+
+        /* Card Panels */
+        .panel {
+            display: none;
+            animation: fadeIn 0.4s ease;
+        }
+
+        .panel.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(8px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .grid-2 {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+        }
+
+        .grid-1-2 {
+            display: grid;
+            grid-template-columns: 360px 1fr;
+            gap: 1.5rem;
+        }
+
+        .card {
+            background: var(--card-bg);
+            backdrop-filter: var(--glass-blur);
+            border: 1px solid var(--card-border);
+            border-radius: 20px;
+            padding: 1.75rem;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.25rem;
+            padding-bottom: 0.85rem;
+            border-bottom: 1px solid var(--card-border);
+        }
+
+        .card-title {
+            font-size: 1.15rem;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+        }
+
+        .card-title i {
+            color: var(--accent-cyan);
+        }
+
+        /* Form Controls */
+        .form-group {
+            margin-bottom: 1.25rem;
+        }
+
+        label {
+            display: block;
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: var(--text-muted);
+            margin-bottom: 0.4rem;
+        }
+
+        input[type="text"], textarea, select {
+            width: 100%;
+            padding: 0.85rem 1rem;
+            background: rgba(15, 23, 42, 0.7);
+            border: 1px solid var(--card-border);
+            border-radius: 12px;
+            color: var(--text-main);
+            font-size: 0.95rem;
+            outline: none;
+            transition: border-color 0.3s;
+        }
+
+        input[type="text"]:focus, textarea:focus, select:focus {
+            border-color: var(--accent-primary);
+            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.2);
+        }
+
+        .btn {
+            padding: 0.85rem 1.5rem;
+            border: none;
+            border-radius: 12px;
+            font-weight: 600;
+            font-size: 0.95rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--accent-primary), var(--accent-cyan));
+            color: #ffffff;
+            box-shadow: 0 4px 15px rgba(99, 102, 241, 0.3);
+        }
+
+        .btn-primary:hover {
+            opacity: 0.92;
+            transform: translateY(-1px);
+        }
+
+        .btn-secondary {
+            background: rgba(255, 255, 255, 0.08);
+            color: var(--text-main);
+            border: 1px solid var(--card-border);
+        }
+
+        .btn-secondary:hover {
+            background: rgba(255, 255, 255, 0.14);
+        }
+
+        .quick-chips {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-top: 0.75rem;
+        }
+
+        .chip {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--card-border);
+            padding: 0.35rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .chip:hover {
+            border-color: var(--accent-cyan);
+            color: var(--accent-cyan);
+            background: rgba(6, 182, 212, 0.1);
+        }
+
+        /* Result Display Box */
+        .result-box {
+            background: rgba(10, 16, 29, 0.8);
+            border: 1px solid var(--card-border);
+            border-radius: 14px;
+            padding: 1.25rem;
+            margin-top: 1rem;
+            min-height: 120px;
+        }
+
+        .citation-tag {
+            display: inline-block;
+            background: rgba(6, 182, 212, 0.15);
+            color: var(--accent-cyan);
+            border: 1px solid rgba(6, 182, 212, 0.3);
+            padding: 0.25rem 0.6rem;
+            border-radius: 6px;
+            font-size: 0.78rem;
+            font-weight: 600;
+            margin-top: 0.5rem;
+        }
+
+        /* Telemetry Cards */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1.25rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .stat-card {
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
+            border-radius: 16px;
+            padding: 1.25rem;
+        }
+
+        .stat-value {
+            font-size: 1.75rem;
+            font-weight: 800;
+            color: var(--text-main);
+            margin: 0.3rem 0;
+        }
+
+        .stat-label {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        /* Table Design */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 0.75rem;
+        }
+
+        th, td {
+            padding: 0.75rem 1rem;
+            text-align: left;
+            border-bottom: 1px solid var(--card-border);
+            font-size: 0.88rem;
+        }
+
+        th {
+            background: rgba(15, 23, 42, 0.5);
+            color: var(--text-muted);
+            font-weight: 600;
+            text-transform: uppercase;
+            font-size: 0.75rem;
+        }
+
+        td code {
+            font-family: 'JetBrains Mono', monospace;
+            background: rgba(0, 0, 0, 0.4);
+            padding: 0.2rem 0.4rem;
+            border-radius: 4px;
+            color: var(--accent-cyan);
+        }
+
+        .badge-success { background: rgba(16, 185, 129, 0.2); color: var(--accent-emerald); border: 1px solid var(--accent-emerald); padding: 0.2rem 0.5rem; border-radius: 6px; font-size: 0.75rem; }
+        .badge-danger { background: rgba(244, 63, 94, 0.2); color: var(--accent-rose); border: 1px solid var(--accent-rose); padding: 0.2rem 0.5rem; border-radius: 6px; font-size: 0.75rem; }
+        .badge-warning { background: rgba(245, 158, 11, 0.2); color: var(--accent-amber); border: 1px solid var(--accent-amber); padding: 0.2rem 0.5rem; border-radius: 6px; font-size: 0.75rem; }
+
+        .timeline-step {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1rem;
+            position: relative;
+        }
+
+        .timeline-step:before {
+            content: '';
+            position: absolute;
+            left: 15px;
+            top: 30px;
+            bottom: -15px;
+            width: 2px;
+            background: var(--card-border);
+        }
+
+        .timeline-step:last-child:before {
+            display: none;
+        }
+
+        .step-icon {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: var(--accent-primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.85rem;
+            z-index: 1;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="brand">
+            <div class="brand-logo">
+                <i class="fa-solid fa-truck-fast"></i>
+            </div>
+            <div>
+                <div class="brand-title">SmartHub Logistics AI</div>
+                <div class="brand-sub">RikkeiExpress Intelligent Operations</div>
+            </div>
+        </div>
+        <div class="status-badge">
+            <div class="status-dot"></div>
+            Spring Boot 3.3.x + Spring AI Active
+        </div>
+    </header>
+
+    <div class="container">
+        <!-- Navigation Tabs -->
+        <nav class="nav-tabs">
+            <button class="tab-btn active" onclick="switchTab('rag')">
+                <i class="fa-solid fa-book-open"></i> Module 1: RAG Quy Chế
+            </button>
+            <button class="tab-btn" onclick="switchTab('agent')">
+                <i class="fa-solid fa-robot"></i> Module 2: AI Agent
+            </button>
+            <button class="tab-btn" onclick="switchTab('mcp')">
+                <i class="fa-solid fa-plug"></i> Module 3: MCP & Safe SQL
+            </button>
+            <button class="tab-btn" onclick="switchTab('llmops')" onclick="fetchStats()">
+                <i class="fa-solid fa-chart-line"></i> Module 4: LLMOps & Telemetry
+            </button>
+        </nav>
+
+        <!-- MODULE 1: RAG PANEL -->
+        <div id="panel-rag" class="panel active">
+            <div class="grid-1-2">
+                <!-- RAG Tuning Controls (RQ-01) -->
+                <div class="card">
+                    <div class="card-header">
+                        <div class="card-title">
+                            <i class="fa-solid fa-sliders"></i> RQ-01 RAG Tuning
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Chunk Size (Tokens)</label>
+                        <select id="rag-chunk-size">
+                            <option value="300">300 (Nhỏ - Chi tiết)</option>
+                            <option value="500" selected>500 (Tối ưu - Standard)</option>
+                            <option value="1000">1000 (Lớn - Ngữ cảnh dài)</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Overlap Ratio</label>
+                        <select id="rag-overlap">
+                            <option value="0">0% (Không lặp)</option>
+                            <option value="10" selected>10% (Tối ưu)</option>
+                            <option value="20">20% (Lặp cao)</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Similarity Threshold: <span id="threshold-val">0.45</span></label>
+                        <input type="range" id="rag-threshold" min="0.2" max="0.9" step="0.05" value="0.45" oninput="document.getElementById('threshold-val').innerText = this.value">
+                    </div>
+                    <div style="font-size:0.8rem; color: var(--text-muted); line-height: 1.4; margin-top: 1rem;">
+                        <i class="fa-solid fa-shield-halved"></i> <b>Chống Hallucination:</b> Nếu độ tương đồng dưới ngưỡng, hệ thống từ chối bịa câu trả lời và báo không tìm thấy.
+                    </div>
+                </div>
+
+                <!-- RAG Query Console -->
+                <div class="card">
+                    <div class="card-header">
+                        <div class="card-title">
+                            <i class="fa-solid fa-magnifying-glass"></i> Tra Cứu Quy Che Logistics RAG
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Đặt câu hỏi về Quy chế vận chuyển & Bồi thường:</label>
+                        <input type="text" id="rag-query" placeholder="Ví dụ: Đơn giao trễ được bồi thường như thế nào?" value="Đơn giao trễ được bồi thường như thế nào?">
+                        <div class="quick-chips">
+                            <div class="chip" onclick="setRagQuery('Đơn giao trễ được bồi thường như thế nào?')">Giao trễ</div>
+                            <div class="chip" onclick="setRagQuery('Hàng hóa bị ướt hỏng bồi thường ra sao?')">Hàng ướt hỏng</div>
+                            <div class="chip" onclick="setRagQuery('Chính sách bồi thường thất lạc hàng hóa?')">Thất lạc hàng</div>
+                            <div class="chip" onclick="setRagQuery('Thời hạn khiếu nại đơn hàng bao nhiêu ngày?')">Thời hạn khiếu nại</div>
+                        </div>
+                    </div>
+                    <button class="btn btn-primary" onclick="executeRagAsk()">
+                        <i class="fa-solid fa-paper-plane"></i> Tra Cứu RAG
+                    </button>
+
+                    <div id="rag-result" class="result-box">
+                        <span style="color: var(--text-muted);">Kết quả trả về kèm trích dẫn sẽ hiển thị tại đây...</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- MODULE 2: AI AGENT PANEL -->
+        <div id="panel-agent" class="panel">
+            <div class="grid-2">
+                <!-- Agent Command Console -->
+                <div class="card">
+                    <div class="card-header">
+                        <div class="card-title">
+                            <i class="fa-solid fa-headset"></i> AI Operations Agent Console
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Nhập yêu cầu bằng tiếng Việt tự nhiên:</label>
+                        <textarea id="agent-input" rows="4" placeholder="Ví dụ: Đơn RK-2026-001 gửi tuần trước bị ướt hỏng hàng ở kho Hà Nội, kiểm tra giúp tôi.">Đơn RK-2026-001 gửi tuần trước bị ướt hỏng hàng ở kho Hà Nội, kiểm tra giúp tôi.</textarea>
+                        <div class="quick-chips">
+                            <div class="chip" onclick="setAgentInput('Đơn RK-2026-001 gửi tuần trước bị ướt hỏng hàng ở kho Hà Nội, kiểm tra giúp tôi.')">Mẫu 1: 💥 Đơn hỏng (RK-2026-001)</div>
+                            <div class="chip" onclick="setAgentInput('Đơn RK-2026-003 ở kho HN-01 bị giao trễ quá 3 ngày rồi.')">Mẫu 2: ⏱️ Đơn trễ (RK-2026-003)</div>
+                            <div class="chip" onclick="setAgentInput('Đơn RK-9999-999 bị móp hộp hàng ở kho Đà Nẵng.')">Mẫu 3: ❌ Mã sai (RK-9999-999)</div>
+                        </div>
+                    </div>
+                    <button class="btn btn-primary" onclick="executeAgentChat()">
+                        <i class="fa-solid fa-gears"></i> Gửi Cho Agent Xử Lý
+                    </button>
+
+                    <div id="agent-response-box" class="result-box" style="margin-top: 1.25rem;">
+                        <span style="color: var(--text-muted);">Phản hồi tự động của Agent sẽ hiển thị tại đây...</span>
+                    </div>
+                </div>
+
+                <!-- Entity Extraction & Tool Timeline -->
+                <div class="card">
+                    <div class="card-header">
+                        <div class="card-title">
+                            <i class="fa-solid fa-diagram-project"></i> Entity Extraction & Tool Execution Timeline
+                        </div>
+                    </div>
+                    
+                    <div style="margin-bottom: 1.25rem;">
+                        <label style="margin-bottom: 0.5rem; display:block;">Thực Thể Đã Bóc Tách (RQ-02):</label>
+                        <div id="entities-card" style="background: rgba(0,0,0,0.3); padding: 1rem; border-radius: 12px; border: 1px solid var(--card-border); font-size: 0.88rem;">
+                            Chưa có dữ liệu bóc tách.
+                        </div>
+                    </div>
+
+                    <div>
+                        <label style="margin-bottom: 0.5rem; display:block;">Chuỗi Công Cụ Đã Gọi (Function Calling):</label>
+                        <div id="tools-timeline" style="max-height: 220px; overflow-y: auto;">
+                            <span style="color: var(--text-muted); font-size: 0.85rem;">Chưa có lượt gọi tool nào.</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- MODULE 3: MCP PANEL -->
+        <div id="panel-mcp" class="panel">
+            <div class="grid-2">
+                <!-- Safe SQL Query Console -->
+                <div class="card">
+                    <div class="card-header">
+                        <div class="card-title">
+                            <i class="fa-solid fa-database"></i> Model Context Protocol (MCP) Safe SQL
+                        </div>
+                        <span class="badge-success"><i class="fa-solid fa-lock"></i> SELECT Only + Limit 100</span>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Truy vấn bằng ngôn ngữ tự nhiên hoặc SQL:</label>
+                        <input type="text" id="mcp-query-input" placeholder="Ví dụ: Tuần trước bưu cục HN-01 có bao nhiêu đơn giao trễ?" value="Tuần trước bưu cục HN-01 có bao nhiêu đơn giao trễ?">
+                        <div class="quick-chips">
+                            <div class="chip" onclick="setMcpQuery('Tuần trước bưu cục HN-01 có bao nhiêu đơn giao trễ?')">Thống kê đơn trễ HN-01</div>
+                            <div class="chip" onclick="setMcpQuery('SELECT * FROM deliveries WHERE status = \'DAMAGED\'')">SQL Đơn hư hỏng</div>
+                            <div class="chip" onclick="setMcpQuery('DELETE FROM deliveries')">⚠️ Thử nghiệm SQL Nguy hiểm (DELETE)</div>
+                        </div>
+                    </div>
+                    <button class="btn btn-primary" onclick="executeMcpQuery()">
+                        <i class="fa-solid fa-play"></i> Thực Thụ Qua MCP Client
+                    </button>
+
+                    <div id="mcp-validation-box" class="result-box" style="margin-top: 1rem;">
+                        <span style="color: var(--text-muted);">Kết quả kiểm duyệt AST Safe SQL & Dữ liệu sẽ hiển thị tại đây...</span>
+                    </div>
+                </div>
+
+                <!-- Stdio Pollution Inspector -->
+                <div class="card">
+                    <div class="card-header">
+                        <div class="card-title">
+                            <i class="fa-solid fa-terminal"></i> RQ-03 Stdio Pollution Protection
+                        </div>
+                    </div>
+                    <div style="font-size:0.85rem; color: var(--text-muted); line-height: 1.5; margin-bottom: 1rem;">
+                        <b>Kiến trúc Stdio Transport:</b><br>
+                        <code>stdout</code> được bảo vệ nghiêm ngặt chỉ dành riêng cho <b>JSON-RPC messages</b>.<br>
+                        Tất cả <code>System.out.println()</code> log bị chặn và chuyển hướng sang <code>System.err</code>.
+                    </div>
+                    <div id="stdio-log-view" style="background: #020617; padding: 1rem; border-radius: 12px; border: 1px solid var(--card-border); font-family: 'JetBrains Mono', monospace; font-size: 0.8rem; color: #38bdf8; min-height: 160px;">
+                        [Stdio Guard] Ready. stdout reserved for JSON-RPC. System.err active.
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- MODULE 4: LLMOPS PANEL -->
+        <div id="panel-llmops" class="panel">
+            <!-- Metrics Bar -->
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-label">Tổng Request</div>
+                    <div class="stat-value" id="stat-requests">0</div>
+                    <div style="font-size:0.75rem; color: var(--accent-emerald);"><i class="fa-solid fa-check"></i> Traces Tracked</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-label">Total Tokens</div>
+                    <div class="stat-value" id="stat-tokens">0</div>
+                    <div style="font-size:0.75rem; color: var(--accent-cyan);" id="stat-token-breakdown">Prompt: 0 | Comp: 0</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-label">Ước Tính Chi Phí ($)</div>
+                    <div class="stat-value" id="stat-cost" style="color: var(--accent-amber);">$0.00000</div>
+                    <div style="font-size:0.75rem; color: var(--text-muted);">OpenAI / Gemini Cost</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-label">Max Iterations</div>
+                    <div class="stat-value" id="stat-max-iter">1</div>
+                    <div style="font-size:0.75rem; color: var(--accent-emerald);" id="stat-sla-status">Guard: Max 6 (Passed)</div>
+                </div>
+            </div>
+
+            <!-- Trace Log Table -->
+            <div class="card">
+                <div class="card-header">
+                    <div class="card-title">
+                        <i class="fa-solid fa-list-check"></i> Langfuse OpenTelemetry Live Trace Log
+                    </div>
+                    <button class="btn btn-secondary" onclick="fetchStats()">
+                        <i class="fa-solid fa-rotate"></i> Refresh
+                    </button>
+                </div>
+                
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Trace ID</th>
+                            <th>Span Name</th>
+                            <th>Latency (ms)</th>
+                            <th>Prompt Tokens</th>
+                            <th>Comp Tokens</th>
+                            <th>Total Tokens</th>
+                            <th>Cost ($)</th>
+                            <th>Agent Iterations</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody id="trace-table-body">
+                        <tr>
+                            <td colspan="9" style="text-align: center; color: var(--text-muted);">Đang tải dữ liệu telemetry...</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function switchTab(tabId) {
+            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+            document.querySelectorAll('.panel').forEach(panel => panel.classList.remove('active'));
+
+            event.currentTarget.classList.add('active');
+            document.getElementById('panel-' + tabId).classList.add('active');
+
+            if (tabId === 'llmops') {
+                fetchStats();
+            }
+        }
+
+        // RAG Functions
+        function setRagQuery(txt) {
+            document.getElementById('rag-query').value = txt;
+        }
+
+        async function executeRagAsk() {
+            const query = document.getElementById('rag-query').value;
+            const chunkSize = document.getElementById('rag-chunk-size').value;
+            const overlapPercent = document.getElementById('rag-overlap').value;
+            const similarityThreshold = document.getElementById('rag-threshold').value;
+
+            const resBox = document.getElementById('rag-result');
+            resBox.innerHTML = `<span style="color: var(--accent-cyan);"><i class="fa-solid fa-spinner fa-spin"></i> Đang truy vấn RAG...</span>`;
+
+            try {
+                const res = await fetch(`/api/v1/rag/ask?query=${encodeURIComponent(query)}&chunkSize=${chunkSize}&overlapPercent=${overlapPercent}&similarityThreshold=${similarityThreshold}`);
+                const data = await res.json();
+
+                let citationsHtml = '';
+                if (data.citations && data.citations.length > 0) {
+                    citationsHtml = data.citations.map(c => 
+                        `<div class="citation-tag"><i class="fa-solid fa-bookmark"></i> ${c.documentName} | ${c.section} | ${c.pageNumber}</div>`
+                    ).join('');
+                }
+
+                resBox.innerHTML = `
+                    <div style="font-weight: 600; font-size: 1rem; color: var(--accent-emerald); margin-bottom: 0.5rem;">
+                        <i class="fa-solid fa-circle-check"></i> Phản hồi RAG (${data.executionTimeMs} ms - Similarity: ${data.similarityScore}):
+                    </div>
+                    <div style="font-size: 0.95rem; line-height: 1.6; white-space: pre-line;">${data.answer}</div>
+                    <div style="margin-top: 0.75rem;">${citationsHtml}</div>
+                `;
+            } catch (err) {
+                resBox.innerHTML = `<span style="color: var(--accent-rose);"><i class="fa-solid fa-triangle-exclamation"></i> Lỗi: ${err.message}</span>`;
+            }
+        }
+
+        // Agent Functions
+        function setAgentInput(txt) {
+            document.getElementById('agent-input').value = txt;
+        }
+
+        async function executeAgentChat() {
+            const msg = document.getElementById('agent-input').value;
+            const resBox = document.getElementById('agent-response-box');
+            const entityBox = document.getElementById('entities-card');
+            const timelineBox = document.getElementById('tools-timeline');
+
+            resBox.innerHTML = `<span style="color: var(--accent-cyan);"><i class="fa-solid fa-spinner fa-spin"></i> Agent đang bóc tách thực thể và thực thi Java Tools...</span>`;
+
+            try {
+                const res = await fetch('/api/v1/operations/chat', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ message: msg })
+                });
+                const data = await res.json();
+
+                // Extracted Entities
+                if (data.extractedEntities) {
+                    const e = data.extractedEntities;
+                    entityBox.innerHTML = `
+                        <div style="display:grid; grid-template-columns: 1fr 1fr; gap: 0.5rem;">
+                            <div><b>Mã đơn (trackingCode):</b> <code>${e.trackingCode || 'N/A'}</code></div>
+                            <div><b>Loại sự cố (incidentType):</b> <span class="badge-warning">${e.incidentType || 'N/A'}</span></div>
+                            <div><b>Bưu cục (hubCode):</b> <code>${e.hubCode || 'N/A'}</code></div>
+                            <div><b>Mức độ (severity):</b> <span class="badge-danger">${e.severity || 'N/A'}</span></div>
+                        </div>
+                    `;
+                }
+
+                // Tool logs timeline
+                if (data.toolExecutionLogs && data.toolExecutionLogs.length > 0) {
+                    timelineBox.innerHTML = data.toolExecutionLogs.map(t => `
+                        <div class="timeline-step">
+                            <div class="step-icon"><i class="fa-solid fa-wrench"></i></div>
+                            <div>
+                                <div style="font-weight: 700; font-size: 0.85rem; color: var(--accent-cyan);">${t.toolName}</div>
+                                <div style="font-size: 0.78rem; color: var(--text-muted);">${t.arguments}</div>
+                                <div style="font-size: 0.78rem; color: ${t.success ? 'var(--accent-emerald)' : 'var(--accent-rose)'};">${t.result}</div>
+                            </div>
+                        </div>
+                    `).join('');
+                } else {
+                    timelineBox.innerHTML = `<span style="color: var(--accent-rose); font-size: 0.85rem;">Không có tool nào được thực thi.</span>`;
+                }
+
+                // Response Message
+                const icon = data.success ? 'fa-circle-check' : 'fa-circle-exclamation';
+                const color = data.success ? 'var(--accent-emerald)' : 'var(--accent-rose)';
+
+                resBox.innerHTML = `
+                    <div style="font-weight: 700; font-size: 1rem; color: ${color}; margin-bottom: 0.5rem;">
+                        <i class="fa-solid ${icon}"></i> Kết quả (${data.executionTimeMs} ms - Iterations: ${data.agentIterations}/6):
+                    </div>
+                    <div style="font-size: 0.95rem; line-height: 1.6; white-space: pre-line;">${data.responseMessage}</div>
+                `;
+            } catch (err) {
+                resBox.innerHTML = `<span style="color: var(--accent-rose);"><i class="fa-solid fa-triangle-exclamation"></i> Lỗi Agent: ${err.message}</span>`;
+            }
+        }
+
+        // MCP Functions
+        function setMcpQuery(q) {
+            document.getElementById('mcp-query-input').value = q;
+        }
+
+        async function executeMcpQuery() {
+            const input = document.getElementById('mcp-query-input').value;
+            const resBox = document.getElementById('mcp-validation-box');
+            const stdioBox = document.getElementById('stdio-log-view');
+
+            resBox.innerHTML = `<span style="color: var(--accent-cyan);"><i class="fa-solid fa-spinner fa-spin"></i> MCP Client đang gửi request tới MCP Server...</span>`;
+
+            try {
+                const res = await fetch('/api/v1/mcp/query', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ naturalLanguageQuery: input, rawSql: input.toUpperCase().startsWith('SELECT') || input.toUpperCase().startsWith('DELETE') ? input : null })
+                });
+                const data = await res.json();
+
+                stdioBox.innerHTML = `
+                    [Stdio Guard] Transport Status: ${data.stdioTransportStatus}<br>
+                    [Stdio Guard] Log Target: ${data.stdioLogTarget}<br>
+                    [Stdio Guard] Executed SQL: ${data.generatedSql}<br>
+                    [Stdio Guard] AST Validation: ${data.safeSqlValidated ? 'PASSED' : 'BLOCKED'}
+                `;
+
+                if (!data.safeSqlValidated) {
+                    resBox.innerHTML = `
+                        <div style="font-weight: 700; color: var(--accent-rose);"><i class="fa-solid fa-shield-xmark"></i> Bị Chặn Bởi Safe SQL Validator:</div>
+                        <div style="color: var(--text-main); margin-top: 0.4rem;">${data.validationMessage}</div>
+                    `;
+                    return;
+                }
+
+                let rowsHtml = '';
+                if (data.queryResults && data.queryResults.length > 0) {
+                    const keys = Object.keys(data.queryResults[0]);
+                    rowsHtml = `
+                        <table>
+                            <thead>
+                                <tr>${keys.map(k => `<th>${k}</th>`).join('')}</tr>
+                            </thead>
+                            <tbody>
+                                ${data.queryResults.map(row => `
+                                    <tr>${keys.map(k => `<td>${row[k]}</td>`).join('')}</tr>
+                                `).join('')}
+                            </tbody>
+                        </table>
+                    `;
+                } else {
+                    rowsHtml = '<div style="color: var(--text-muted); margin-top:0.5rem;">Không tìm thấy bản ghi phù hợp.</div>';
+                }
+
+                resBox.innerHTML = `
+                    <div style="font-weight: 700; color: var(--accent-emerald);"><i class="fa-solid fa-check"></i> Safe SQL Validated: <code>${data.generatedSql}</code></div>
+                    ${rowsHtml}
+                `;
+            } catch (err) {
+                resBox.innerHTML = `<span style="color: var(--accent-rose);">Lỗi MCP: ${err.message}</span>`;
+            }
+        }
+
+        // Telemetry Functions
+        async function fetchStats() {
+            try {
+                const res = await fetch('/api/v1/telemetry/stats');
+                const data = await res.json();
+
+                document.getElementById('stat-requests').innerText = data.totalRequests;
+                document.getElementById('stat-tokens').innerText = data.totalTokens;
+                document.getElementById('stat-token-breakdown').innerText = `Prompt: ${data.totalPromptTokens} | Comp: ${data.totalCompletionTokens}`;
+                document.getElementById('stat-cost').innerText = '$' + data.totalCostUsd.toFixed(5);
+                document.getElementById('stat-max-iter').innerText = data.maxAgentIterationsObserved + ' / 6';
+
+                const tbody = document.getElementById('trace-table-body');
+                if (data.recentTraces && data.recentTraces.length > 0) {
+                    tbody.innerHTML = data.recentTraces.map(t => `
+                        <tr>
+                            <td><code>${t.traceId}</code></td>
+                            <td><b>${t.spanName}</b></td>
+                            <td>${t.latencyMs} ms</td>
+                            <td>${t.promptTokens}</td>
+                            <td>${t.completionTokens}</td>
+                            <td>${t.totalTokens}</td>
+                            <td style="color: var(--accent-amber);">$${t.costUsd.toFixed(5)}</td>
+                            <td>${t.agentIterations}</td>
+                            <td>${t.success ? '<span class="badge-success">Success</span>' : '<span class="badge-danger">Failed</span>'}</td>
+                        </tr>
+                    `).join('');
+                } else {
+                    tbody.innerHTML = '<tr><td colspan="9" style="text-align: center; color: var(--text-muted);">Chưa có trace telemetry nào.</td></tr>';
+                }
+            } catch (err) {
+                console.error("Failed to fetch telemetry stats", err);
+            }
+        }
+
+        // Initial Telemetry load
+        fetchStats();
+    </script>
+</body>
+</html>

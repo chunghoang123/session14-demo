@@ -1,0 +1,31 @@
+QUY CHẾ VẬN HÀNH VÀ BỒI THƯỜNG LOGISTICS RIKKEIEXPRESS
+Mã tài liệu: QC-2026-LOG
+Ngày ban hành: 01/01/2026
+
+ĐIỀU 1: QUY ĐỊNH CHUNG VỀ DỊCH VỤ LOGISTICS
+- RikkeiExpress cung cấp dịch vụ giao hàng nội địa và quốc tế qua mạng lưới các trung tâm trung chuyển (Hub).
+- Các hub chính bao gồm: Hub Hà Nội (mã HN-01), Hub TP. Hồ Chí Minh (mã HCM-01), Hub Đà Nẵng (mã DN-01).
+- Trạng thái đơn hàng trên hệ thống gồm: IN_TRANSIT (Đang vận chuyển), DELIVERED (Đã giao hàng), DELAYED (Giao trễ), DAMAGED (Hàng bị hỏng hóc/hư hại).
+
+ĐIỀU 2: CHÍNH SÁCH BỒI THƯỜNG KHI ĐƠN GIAO TRỄ
+- Khoản 2.1: Đơn hàng bị trễ so với thời gian cam kết từ 12 đến 24 giờ: RikkeiExpress hỗ trợ voucher giảm 20% phí vận chuyển cho đơn tiếp theo.
+- Khoản 2.2: Đơn hàng bị giao trễ từ 24 đến 48 giờ: Bồi thường 50% cước phí vận chuyển của đơn hàng đó.
+- Khoản 2.3: Đơn hàng bị giao trễ trên 48 giờ: Bồi thường 100% cước phí vận chuyển và miễn phí COD cho người nhận.
+- Nguồn trích dẫn: Điều 2, Quy chế QC-2026-LOG, Trang 2.
+
+ĐIỀU 3: CHÍNH SÁCH BỒI THƯỜNG KHI HÀNG BỊ ƯỚT/HỎNG HÓC
+- Khoản 3.1: Trường hợp hàng hóa bị hư hỏng, ướt hỏng do lỗi vận chuyển hoặc lưu kho tại các Hub (như kho HN-01, HCM-01):
+  + Đối với đơn hàng có khai giá: Bồi thường 100% giá trị hàng hóa bị hỏng (tối đa không quá 20.000.000 VNĐ/đơn).
+  + Đối với đơn hàng không khai giá: Bồi thường gấp 5 lần cước phí vận chuyển.
+- Khoản 3.2: Khi phát hiện đơn hàng bị ướt/hỏng, bộ phận vận hành phải lập tức tạo sự cố loại "HỎNG_HÓC" với mức độ CRITICAL hoặc MEDIUM và cập nhật trạng thái đơn hàng thành DAMAGED.
+- Nguồn trích dẫn: Điều 3, Quy chế QC-2026-LOG, Trang 3.
+
+ĐIỀU 4: CHÍNH SÁCH THẤT LẠC HÀNG HÓA
+- Khoản 4.1: Đơn hàng bị mất kết nối quá 7 ngày làm việc kể từ ngày cập nhật cuối cùng được xác nhận là Thất Lạc (THẤT_LẠC).
+- Khoản 4.2: Mức bồi thường thất lạc là 100% giá trị khai giá đối với hàng có khai giá, hoặc tối đa 10 lần cước vận chuyển đối với hàng không khai giá.
+- Nguồn trích dẫn: Điều 4, Quy chế QC-2026-LOG, Trang 4.
+
+ĐIỀU 5: QUY TRÌNH XỬ LÝ SỰ CỐ VÀ KHIẾU NẠI
+- Khoản 5.1: Thời hạn tiếp nhận khiếu nại là trong vòng 07 ngày kể từ ngày đơn hàng chuyển sang trạng thái cuối cùng.
+- Khoản 5.2: Bộ phận CSKH/Vận hành tiếp nhận phản ánh, trích xuất mã đơn (trackingCode), Hub xử lý (hubCode), xác định loại sự cố (incidentType) và mức độ nghiêm trọng (severity).
+- Nguồn trích dẫn: Điều 5, Quy chế QC-2026-LOG, Trang 5.
